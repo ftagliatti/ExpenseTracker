@@ -1,0 +1,68 @@
+﻿@*@model IEnumerable<ExpenseTrackerWebApp.Models.Expense>*@
+@model ExpenseTrackerWebApp.ViewModels.ViewModel
+
+
+<div class="container pt-3">
+    <div class="row pt-3">
+        <div class="col-6">
+            <h2 class="text-primary">My Expenses</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="Expense" asp-action="Create" class="btn btn-primary">Add New Expense</a>
+        </div>
+    </div>
+    <br />
+
+    @if (Model.Expenses.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Person
+                    </th>
+                    <th>
+                        Item Name
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Edit
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var expense in Model.Expenses)
+                {
+                <tr>
+                    @foreach (var person in Model.People)
+                    {
+                        if (person.PersonId == expense.PersonId)
+                        {
+                            <td width="20%">@person.FullName</td>
+                        }
+                    }
+                    <td width="20%">@expense.ItemName</td>
+                    <td width="20%">@expense.Amount.ToString("C2")</td>
+                    <td width="20%">@expense.Date.ToString("MM/dd/yyyy")</td>
+                    <td width="20%">
+                        <div class="w-100 btn-group" role="group">
+                            <a asp-controller="Expense" asp-action="Update" asp-route-itemId="@expense.ItemId" class="btn btn-primary mx-1">Update</a>
+                            <a asp-controller="Expense" asp-action="Delete" asp-route-itemId="@expense.ItemId" class="btn btn-danger mx-1">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No expenses created yet</p>
+    }
+
+</div>
